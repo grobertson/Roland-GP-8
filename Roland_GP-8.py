@@ -3,31 +3,34 @@
 import binascii
 import devices.gp8 as gp8
 
-''' Object oriented abstraction for Roland GP-8 ops and storage formats
-
-    Refer to GP-8 Notes.md, and the Roland GP-8 Owner's Manual for deep dives.
-
-'''
-
-
 class RolandGp8():
+    ''' Object oriented abstraction for Roland GP-8 ops and storage formats
 
+        Refer to GP-8 Notes.md, and the Roland GP-8 Owner's Manual for deep dives.
+
+    '''
     def __init__(self, record=None):
+        ''' If initialized with no params, the object returned is a "blank" record
+            with the address set to write to the immediate mode temp area at '00 00' 
+        '''
         if record == None:
-            # TODO: Initialize a record from scratch.
-            record = b'f0410013124040000a0050646464643c006432211e3c3c32323c64320310191a0f64411b14000000204472792052687974686d20202020200023f7'
+            record = binascii.unhexlify(b'f041001312000000000050646464643c006432211e003232323c64320310191a0f64411b140000002a556e7469746c656420202020202020200012f7')
         self._record = bytearray(record)
-        self._group = 0x00
-        self._index = 0x00  # Pushing to temp lets us change settings live
         self._gp8 = gp8.data
-        self._effect_msb = gp8.BANK_1_EFFECTS_MSB
-        self._effect_lsb = gp8.BANK_2_EFFECTS_LSB
+        self._effect_lookup = gp8.BANK_1_EFFECTS_MSB
+        self._effect_lookup.update(gp8.BANK_2_EFFECTS_LSB)
 
     def __str__(self):
         return self.__repr__()
 
     def __repr__(self):
         return ''.join([str(self.group), '-', str(self.bank), '-', str(self.program), ':', self.name])
+
+    def csv_hex(self):
+        csv = []
+        for byte in p._record:
+            csv.append(byte.to_bytes(1, 'big').hex())
+        return ','.join(csv)
 
     def _read_value(self, name):
         ''' Read data from the sysex buffer using the data dictionary '''
@@ -45,16 +48,22 @@ class RolandGp8():
             return self._record[data['position']:data['position'] + data['length']]
 
     def _write_value(self, name, value):
+        ''' Write data from the sysex buffer using the data dictionary '''
         data = self._gp8[name]
-        if data['type'] in ['int', 'bitwise']:
-            if type(value) == type(0):
-                self._record[data['position']:data['position'] + data['length']] = [value]
+        if data['type'] in ['int', 'bitwise'] and type(value) == type(0):
+            self._record[data['position']:data['position'] + data['length']] = [value]
         if data['type'] == 'bool':
             if value:
                 self._record[data['position']:data['position'] + data['length']] = [100]
             else:
                 self._record[data['position']:data['position'] + data['length']] = [0]
 
+    def _effect_set(self, bank, ef, value):
+        ''' Read data from the sysex buffer using the data dictionary '''
+        if value != bool(self._read_value(bank) & self._effect_lookup[ef] == self._effect_lookup[ef]):
+            # XOR flip the bit
+            self._write_value(bank, self._read_value(bank) ^ self._effect_lookup[ef])
+    
     @property
     def name(self):
         data = self._gp8['NAME']
@@ -90,11 +99,11 @@ class RolandGp8():
     #Dynamic Filter
     @property
     def filter(self): 
-        return bool(self._read_value('EFFECT_LSB') & self._effect_lsb['DYNAMIC_FILTER'] == self._effect_lsb['DYNAMIC_FILTER'])
+        return bool(self._read_value('EFFECT_LSB') & self._effect_lookup['DYNAMIC_FILTER'] == self._effect_lookup['DYNAMIC_FILTER'])
     
     @filter.setter
     def filter(self, value):
-        raise NotImplementedError
+        self._effect_set('EFFECT_LSB', 'DYNAMIC_FILTER', value)
 
     @filter.deleter
     def filter(self):
@@ -103,11 +112,11 @@ class RolandGp8():
     #Compressor
     @property
     def compressor(self):
-        return bool(self._read_value('EFFECT_LSB') & self._effect_lsb['COMPRESSOR'] == self._effect_lsb['COMPRESSOR'])
+        return bool(self._read_value('EFFECT_LSB') & self._effect_lookup['COMPRESSOR'] == self._effect_lookup['COMPRESSOR'])
     
     @compressor.setter
     def compressor(self, value):
-        raise NotImplementedError
+        self._effect_set('EFFECT_LSB', 'COMPRESSOR', value)
 
     @compressor.deleter
     def compressor(self):
@@ -116,11 +125,11 @@ class RolandGp8():
     #Overdrive
     @property
     def overdrive(self):
-        return bool(self._read_value('EFFECT_LSB') & self._effect_lsb['OVERDRIVE'] == self._effect_lsb['OVERDRIVE'])
+        return bool(self._read_value('EFFECT_LSB') & self._effect_lookup['OVERDRIVE'] == self._effect_lookup['OVERDRIVE'])
     
     @overdrive.setter
     def overdrive(self, value):
-        raise NotImplementedError
+        self._effect_set('EFFECT_LSB', 'OVERDRIVE', value)
 
     @overdrive.deleter
     def overdrive(self):
@@ -129,11 +138,11 @@ class RolandGp8():
     #Distortion
     @property
     def distortion(self):
-        return bool(self._read_value('EFFECT_LSB') & self._effect_lsb['DISTORTION'] == self._effect_lsb['DISTORTION'])
+        return bool(self._read_value('EFFECT_LSB') & self._effect_lookup['DISTORTION'] == self._effect_lookup['DISTORTION'])
       
     @distortion.setter
     def distortion(self, value):
-        raise NotImplementedError
+        self._effect_set('EFFECT_LSB', 'DISTORTION', value)
 
     @distortion.deleter
     def distortion(self):
@@ -142,11 +151,11 @@ class RolandGp8():
     #Phaser
     @property
     def phaser(self):
-        return bool(self._read_value('EFFECT_MSB') & self._effect_msb['PHASER'] == self._effect_msb['PHASER'])
+        return bool(self._read_value('EFFECT_MSB') & self._effect_lookup['PHASER'] == self._effect_lookup['PHASER'])
 
     @phaser.setter
     def phaser(self, value):
-        raise NotImplementedError
+        self._effect_set('EFFECT_MSB', 'PHASER', value)
 
     @phaser.deleter
     def phaser(self):
@@ -155,11 +164,11 @@ class RolandGp8():
     #Equalizer
     @property
     def equalizer(self):
-        return bool(self._read_value('EFFECT_MSB') & self._effect_msb['EQUALIZER'] == self._effect_msb['EQUALIZER'])
+        return bool(self._read_value('EFFECT_MSB') & self._effect_lookup['EQUALIZER'] == self._effect_lookup['EQUALIZER'])
     
     @equalizer.setter
     def equalizer(self, value):
-        raise NotImplementedError
+        self._effect_set('EFFECT_MSB', 'EQUALIZER', value)
 
     @equalizer.deleter
     def equalizer(self):
@@ -168,11 +177,11 @@ class RolandGp8():
     #Delay
     @property
     def delay(self):
-        return bool(self._read_value('EFFECT_MSB') & self._effect_msb['DELAY'] == self._effect_msb['DELAY'])
+        return bool(self._read_value('EFFECT_MSB') & self._effect_lookup['DELAY'] == self._effect_lookup['DELAY'])
     
     @delay.setter
     def delay(self, value):
-        raise NotImplementedError
+        self._effect_set('EFFECT_MSB', 'DELAY', value)
 
     @delay.deleter
     def delay(self):
@@ -181,18 +190,33 @@ class RolandGp8():
     #Chorus
     @property
     def chorus(self):
-        return bool(self._read_value('EFFECT_MSB') & self._effect_msb['CHORUS'] == self._effect_msb['CHORUS'])
+        return bool(self._read_value('EFFECT_MSB') & self._effect_lookup['CHORUS'] == self._effect_lookup['CHORUS'])
     
     @chorus.setter
     def chorus(self, value):
-        raise NotImplementedError
+        self._effect_set('EFFECT_MSB', 'CHORUS', value)
 
     @chorus.deleter
     def chorus(self):
         raise NotImplementedError
 
+    #For convenience
+    @property
+    def effects(self):
+        return {
+            'Phaser': self.phaser,
+            'Equalizer': self.equalizer,
+            'Delay': self.delay,
+            'Chorus': self.chorus,
+            'Dynamic Filter': self.filter,
+            'Compressor': self.compressor,
+            'Overdrive': self.overdrive,
+            'Distortion': self.distortion,
+        }
+        
+    #
     #Effect Properties
-
+    #
     # FILTER_SENS
 
     @property
@@ -582,6 +606,7 @@ class RolandGp8():
 
     @property
     def bank(self):
+        if self._read_value('ADDR_MSB') == 0: return 0
         return int((self._read_value('ADDR_MSB') - 64) / 8) + 1
 
     @bank.setter
@@ -591,6 +616,7 @@ class RolandGp8():
     
     @property
     def program(self):
+        if self._read_value('ADDR_MSB') == 0: return 0
         return int((self._read_value('ADDR_MSB') - 64) % 8) + 1
 
     @program.setter
@@ -602,9 +628,9 @@ def read_sysex(filename):
     program = []
     try:
         with open(filename, 'rb') as file:
-            for p in range(0, 127):
+            for x in range(0, 127):
                 program.append(RolandGp8(file.read(59)))
-    except:
+    except (FileExistsError, FileNotFoundError):
         exit(' '.join(["Could not open", filename, "for read. Sorry."]))
     return program
 
