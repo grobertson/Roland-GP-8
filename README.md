@@ -9,6 +9,13 @@ LONG discontinued, the Roland GP-8 rackmounted guitar effects processor is a vin
 
 The GP-8 is still (2021) relatively easy find used, has *excellent* analog effects, and IMHO is an insane amount of value in one unit. 
 
+### See & hear the GP-8 in action
+
+So. Much. Tone.
+
+* [Roland GP-8 - BOSS Pedals in a Rack!](https://www.youtube.com/watch?v=UAzTq0hcbCM)
+* [Roland GP-8 HUGE tones with a Gibson 335](https://www.youtube.com/watch?v=yn_BG_ZZn94)
+  
 Released in 1987, the GP-8 (And the "New for '89!" all digital GP-16 released in 1989) suffer from one major drawback -- working with all those settings on a 2x16 character LCD using 10 buttons and a rotary encoder is time consuming, error prone, and ultimately very frustrating.
 
 User created software tools for the GP-(8|16) were available, once upon a time. If you spend as much time searching for them as I have, you'll find forum posts from years ago, but no software.
