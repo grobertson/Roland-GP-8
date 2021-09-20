@@ -1,13 +1,12 @@
 # Roland GP-8 MIDI library
-# 
 
 Implementation of an object which can parse/edit the Roland GP-8's SYSEX patch format.
 
-## But, why? 
+## But, why?
 
 LONG discontinued, the Roland GP-8 rackmounted guitar effects processor is a vintage gem. Simply put, the GP-8 is 8 vintage BOSS stomp boxes -- SIX fully analog effects!! -- shoved into a 1U rackmount chassis.
 
-The GP-8 is still (2021) relatively easy find used, has *excellent* analog effects, and IMHO is an insane amount of value in one unit. 
+The GP-8 is still (2021) relatively easy find used, has *excellent* analog effects, and IMHO is an insane amount of value in one unit.
 
 ### See & hear the GP-8 in action
 
@@ -36,7 +35,7 @@ Still a bit of a work in progress, there is enough functionality in the library 
 
 ### What doesn't work? (yet)
 
-* Device definition module is still a WIP. 
+* Device definition module is still a WIP.
 * Using GP-8 implementation to work with ideas about (mostly?) generic definition of SYSEX formats.
 * I have a device, sysex dumps, and the manuals for the GP-8's successor, the GP-16.
 * Ultimately, I want to cover both of these vintage effects processors.
