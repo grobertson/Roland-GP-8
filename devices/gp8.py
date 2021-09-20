@@ -133,7 +133,7 @@ data = {
         'name': "Sensitivity",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'FILTER_CUTOFF_FREQ': {
@@ -144,7 +144,7 @@ data = {
         'name': "Cutoff Frequency",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'FILTER_Q': {
@@ -155,7 +155,7 @@ data = {
         'name': "Quotient",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'FILTER_UP_DOWN': {
@@ -178,7 +178,7 @@ data = {
         'name': "Attack",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'COMP_SUSTAIN': {
@@ -189,7 +189,7 @@ data = {
         'name': "Sustain",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     #'''Turbo Overdrive'''
@@ -201,7 +201,7 @@ data = {
         'name': "Tone",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'OD_DRIVE': {
@@ -212,7 +212,7 @@ data = {
         'name': "Drive",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     'OD_TURBO': {
@@ -235,7 +235,7 @@ data = {
         'name': "Tone",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'DIST_DIST': {
@@ -246,7 +246,7 @@ data = {
         'name': "Distortion",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     # '''Phaser'''
@@ -258,7 +258,7 @@ data = {
         'name': "Rate",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'PHASER_DEPTH': {
@@ -269,7 +269,7 @@ data = {
         'name': "Depth",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     'PHASER_RESONANCE': {
@@ -280,7 +280,7 @@ data = {
         'name': "Resonance",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     # '''Equalizer'''
@@ -292,7 +292,7 @@ data = {
         'name': "High",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'EQ_MID': {
@@ -303,7 +303,7 @@ data = {
         'name': "Mid",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'EQ_LO': {
@@ -314,7 +314,7 @@ data = {
         'name': "Low",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'EQ_GAIN': {
@@ -325,7 +325,7 @@ data = {
         'name': "Gain",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     # '''Delay'''
@@ -337,7 +337,7 @@ data = {
         'name': "Level",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     # TODO: Need to deal with these two bytes combined to yeild an int [0-1000]
@@ -349,7 +349,7 @@ data = {
         'name': "Time",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(1000),
+        'range': range(1001),
     },  # (0-1000)
 
     'DELAY_FEEDBACK': {
@@ -360,7 +360,7 @@ data = {
         'name': "Feedback",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     # '''Chorus'''
@@ -372,7 +372,7 @@ data = {
         'name': "Rate",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     'CHORUS_DEPTH': {
@@ -383,7 +383,7 @@ data = {
         'name': "Depth",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'CHORUS_LEVEL': {
@@ -394,7 +394,7 @@ data = {
         'name': "Level",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
     
     'CHORUS_PRE_DELAY': {
@@ -405,7 +405,7 @@ data = {
         'name': "Pre Delay",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },   # 00h-64h (0-100)
     
     'CHORUS_FEEDBACK': {
@@ -416,7 +416,7 @@ data = {
         'name': "Feedback",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     # '''Misc'''
@@ -428,7 +428,7 @@ data = {
         'name': "Volume",
         'description': "",
         'default': bytes().fromhex('14'),
-        'range': range(100),
+        'range': range(101),
     },  # 00h-64h (0-100)
 
     'EV_5_PARAM': {
@@ -482,7 +482,7 @@ data = {
         'name': "String Terminator",
         'description': "",
         'default': bytes().fromhex('00'),
-        'range': None,
+        'range': ['00'],
     },  # 00h (Null)
 
     #'''Close Packet'''
@@ -503,7 +503,7 @@ data = {
         'name': "Sysex Message End",
         'description': "",
         'default': bytes().fromhex('f7'),
-        'range': None,
+        'range': ['F7'],
     }   # F7
 }
 
