@@ -53,8 +53,7 @@ class RolandGp8():
             name ([string]): The name of the value from self._gp8 to reset in self._record  
         """
         data = self._gp8[name]
-        self._record[data['position']:data['position'] +
-                     data['length']] = data['default']
+        self._write_value(name, data['default'])
 
     def _write_value(self, name, value):
         """Write data to the self._record buffer using the data dictionary
@@ -78,6 +77,13 @@ class RolandGp8():
             else:
                 self._record[data['position']
                     :data['position'] + data['length']] = [0]
+
+        if data['type'] == 'string':
+            """Pad the string to length with spaces"""
+            while len(value) <= data['length']:
+                value = value + " "
+            self._record[data['position']:data['position'] +
+                     data['length']] = bytes(value, 'ascii')
 
     def _effect_get(self, bank, effect):
         """Read data from the sysex buffer using the data dictionary
@@ -116,12 +122,7 @@ class RolandGp8():
     @name.setter
     def name(self, value):
         """ Update the name of the patch. Automatically padded/trimmed to 16 chars """
-        data = self._gp8['NAME']
-        while len(value) <= data['length']:
-            """Pad the string to length with spaces"""
-            value = value + " "
-        self._record[data['position']:data['position'] +
-                     data['length']] = bytes(value, 'ascii')
+        self._write_value('NAME', value)
 
     @name.deleter
     def name(self):
@@ -131,15 +132,15 @@ class RolandGp8():
     @property
     def volume(self):
         """ Return the master volume as int 0-100 """
-        return self._read_value('MASTER_VOLUME')
+        return self._read_value('VOLUME')
 
     @volume.setter
     def volume(self, value):
-        return self._write_value('MASTER_VOLUME', value)
+        return self._write_value('VOLUME', value)
 
     @volume.deleter
     def volume(self):
-        return self._reset_value('MASTER_VOLUME')
+        return self._reset_value('VOLUME')
 
     # EFFECT BIT SWITCHES
 
@@ -638,15 +639,15 @@ class RolandGp8():
     # EV_5_PARAM
     @property
     def ev5_param(self):
-        return self._read_value('EV_5_PARAM')
+        return self._read_value('EV5_PARAM')
 
     @ev5_param.setter
     def ev5_param(self, value):
-        return self._write_value('EV_5_PARAM', value)
+        return self._write_value('EV5_PARAM', value)
 
     @ev5_param.deleter
     def ev5_param(self):
-        self._reset_value('EV_5_PARAM')
+        self._reset_value('EV5_PARAM')
 
     # EXT_CONTROL_1
     @property
@@ -677,7 +678,7 @@ class RolandGp8():
     # GROUP
     @property
     def group(self):
-        if self._read_value('ADDR_LSB') == 64:
+        if self._read_value('GROUP') == 64:
             return 'B'
         else:
             return 'A'
@@ -690,28 +691,28 @@ class RolandGp8():
             group = 64
         else:
             raise ValueError
-        return self._write_value('ADDR_LSB', [group])
+        return self._write_value('GROUP', [group])
 
     @property
     def bank(self):
-        if self._read_value('ADDR_MSB') == 0:
+        if self._read_value('BANK') == 0:
             return 0
-        return int((self._read_value('ADDR_MSB') - 64) / 8) + 1
+        return int((self._read_value('BANK') - 64) / 8) + 1
 
     @bank.setter
     def bank(self, value):
         value = ((value - 1) * 7) + self.program + 64
-        return self._write_value('ADDR_MSB', value)
+        return self._write_value('BANK', value)
 
     @property
     def program(self):
-        if self._read_value('ADDR_MSB') == 0:
+        if self._read_value('PROGRAM') == 0:
             return 0
-        return int((self._read_value('ADDR_MSB') - 64) % 8) + 1
+        return int((self._read_value('PROGRAM') - 64) % 8) + 1
 
     @program.setter
     def program(self, value):
         value = self.bank + value
-        return self._write_value('ADDR_MSB', value)
+        return self._write_value('PROGRAM', value)
 
 

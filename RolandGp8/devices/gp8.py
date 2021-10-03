@@ -23,6 +23,8 @@ we trust the object to translate it properly (just like when getting an int valu
 
 Default is always provided as a bytes object.
 
+Range is checked on write. It shouldn't be possible to write a value out of range 
+into any position. 
 '''
 data = {
     'SYSEX_BEGIN': {
@@ -80,28 +82,39 @@ data = {
         'range': ['12'],
     },
     
-    'ADDR_MSB': {
+    'PROGRAM': {
         'position': 5,
         'length': 1,
         'type': 'bitwise',
         'category': 'meta',
-        'name': "Address MSB",
+        'name': "Program",
         'description': "",
-        'default': bytes().fromhex('40'),
+        'default': 0,
         'range': range(64),
     },
     
-    'ADDR_LSB': {
+    'BANK': {
+        'position': 5,
+        'length': 1,
+        'type': 'bitwise',
+        'category': 'meta',
+        'name': "Bank",
+        'description': "",
+        'default': 0,
+        'range': range(64),
+    },
+    
+    'GROUP': {
         'position': 6,
         'length': 1,
         'type': 'bitwise',
         'category': 'meta',
-        'name': "Address LSB",
+        'name': "GROUP",
         'description': "",
-        'default': bytes().fromhex('00'),
-        'range': ['00', '40']
+        'default': 'A',
+        'range': ['00', '40'],
     },
-    
+
     'EFFECT_MSB': {
         'position': 7,
         'length': 1,
@@ -132,7 +145,7 @@ data = {
         'category': 'Filter',
         'name': "Sensitivity",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 0,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -143,7 +156,7 @@ data = {
         'category': 'Filter',
         'name': "Cutoff Frequency",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 80,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -154,7 +167,7 @@ data = {
         'category': 'Filter',
         'name': "Quotient",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 100,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -165,8 +178,8 @@ data = {
         'category': 'Filter',
         'name': "Direction",
         'description': "",
-        'default': bytes().fromhex('00'),
-        'range': [0, 100],
+        'default': True,
+        'range': [True, False],
     },  # 00h = Low Cut, 64h = high cut (0,100)
 
     # '''Compressor'''
@@ -177,7 +190,7 @@ data = {
         'category': 'Compressor',
         'name': "Attack",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 100,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -188,7 +201,7 @@ data = {
         'category': 'Compressor',
         'name': "Sustain",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 100,
         'range': range(101),
     },  # 00h-64h (0-100)
 
@@ -200,7 +213,7 @@ data = {
         'category': 'Overdrive',
         'name': "Tone",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 60,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -211,7 +224,7 @@ data = {
         'category': 'Overdrive',
         'name': "Drive",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 0,
         'range': range(101),
     },  # 00h-64h (0-100)
 
@@ -222,8 +235,8 @@ data = {
         'category': 'Overdrive',
         'name': "Turbo",
         'description': "",
-        'default': bytes().fromhex('00'),
-        'range': [0, 100],
+        'default': True,
+        'range': [True, False],
     },  # 00h = Off, 64h = On (0,100)
 
     # '''Distortion'''
@@ -234,7 +247,7 @@ data = {
         'category': 'Distortion',
         'name': "Tone",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 50,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -245,7 +258,7 @@ data = {
         'category': 'Distortion',
         'name': "Distortion",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 33,
         'range': range(101),
     },  # 00h-64h (0-100)
 
@@ -257,7 +270,7 @@ data = {
         'category': 'Phaser',
         'name': "Rate",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 30,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -268,7 +281,7 @@ data = {
         'category': 'Phaser',
         'name': "Depth",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 0,
         'range': range(101),
     },  # 00h-64h (0-100)
 
@@ -279,7 +292,7 @@ data = {
         'category': 'Phaser',
         'name': "Resonance",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 50,
         'range': range(101),
     },  # 00h-64h (0-100)
 
@@ -291,7 +304,7 @@ data = {
         'category': 'Equalizer',
         'name': "High",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 50,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -302,7 +315,7 @@ data = {
         'category': 'Equalizer',
         'name': "Mid",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 50,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -313,7 +326,7 @@ data = {
         'category': 'Equalizer',
         'name': "Low",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 60,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -324,7 +337,7 @@ data = {
         'category': 'Equalizer',
         'name': "Gain",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 50,
         'range': range(101),
     },  # 00h-64h (0-100)
 
@@ -336,7 +349,7 @@ data = {
         'category': 'Delay',
         'name': "Level",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 50,
         'range': range(101),
     },  # 00h-64h (0-100)
 
@@ -359,7 +372,7 @@ data = {
         'category': 'Delay',
         'name': "Feedback",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 25,
         'range': range(101),
     },  # 00h-64h (0-100)
 
@@ -371,7 +384,7 @@ data = {
         'category': 'Chorus',
         'name': "Rate",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 26,
         'range': range(101),
     },  # 00h-64h (0-100)
 
@@ -382,7 +395,7 @@ data = {
         'category': 'Chorus',
         'name': "Depth",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 15,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -393,7 +406,7 @@ data = {
         'category': 'Chorus',
         'name': "Level",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 100,
         'range': range(101),
     },  # 00h-64h (0-100)
     
@@ -404,7 +417,7 @@ data = {
         'category': 'Chorus',
         'name': "Pre Delay",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 0x41,
         'range': range(101),
     },   # 00h-64h (0-100)
     
@@ -415,30 +428,30 @@ data = {
         'category': 'Chorus',
         'name': "Feedback",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 27,
         'range': range(101),
     },  # 00h-64h (0-100)
 
     # '''Misc'''
-    'MASTER_VOLUME': {
+    'VOLUME': {
         'position': 36,
         'length': 1,
         'type': 'int',
         'category': 'meta',
         'name': "Volume",
         'description': "",
-        'default': bytes().fromhex('14'),
+        'default': 20,
         'range': range(101),
     },  # 00h-64h (0-100)
 
-    'EV_5_PARAM': {
+    'EV5_PARAM': {
         'position': 37,
         'length': 1,
         'type': 'int',
         'category': 'meta',
         'name': "EV-5 Parameter",
         'description': "",
-        'default': bytes().fromhex('00'),
+        'default': 0,
         'range': range(28),
     },  # 00h-1Bh (0-27, 0=Off, 1= FILTER_SENS...27=MASTER_VOLUME)
 
@@ -449,8 +462,8 @@ data = {
         'category': 'meta',
         'name': "External Control 1",
         'description': "",
-        'default': bytes().fromhex('00'),
-        'range': [0, 100],
+        'default': False,
+        'range': [True, False],
     },  # 00h = Off, 64h = On (0,100)
     
     'EXT_CONTROL_2': {
@@ -460,8 +473,8 @@ data = {
         'category': 'meta',
         'name': "External Control 2",
         'description': "",
-        'default': bytes().fromhex('00'),
-        'range': [0, 100],
+        'default': 0,
+        'range': [0, 100, True, False],
     },  # 00h = Off, 64h = On (0,100)
 
     # '''Name'''
@@ -471,7 +484,7 @@ data = {
         'type': 'string',
         'name': "Name",
         'description': "",
-        'default': bytes('*Untitled       ', 'ascii'),
+        'default': '*Untitled       ',
         'range': None
     },  # 20h-7Fh (32-127, 7 bit ASCII)
 

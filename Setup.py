@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-
 from distutils.core import setup
-
 setup(name='Roland-Gp-8',
       version='1.0',
       description='Library for inspecting and modifying Roland Gp-8 sysex dump format.',
