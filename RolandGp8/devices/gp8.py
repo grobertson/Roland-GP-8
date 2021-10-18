@@ -89,7 +89,7 @@ data = {
         'category': 'meta',
         'name': "Program",
         'description': "",
-        'default': 0,
+        'default': 0x00,
         'range': range(64),
     },
     
@@ -112,7 +112,7 @@ data = {
         'name': "GROUP",
         'description': "",
         'default': 'A',
-        'range': ['00', '40'],
+        'range': [0x0, 0x40],
     },
 
     'EFFECT_MSB': {
@@ -474,7 +474,7 @@ data = {
         'name': "External Control 2",
         'description': "",
         'default': 0,
-        'range': [0, 100, True, False],
+        'range': [True, False],
     },  # 00h = Off, 64h = On (0,100)
 
     # '''Name'''

@@ -19,7 +19,7 @@ class RolandGp8():
                 effects off, name set to "*Untitled"
             """
             record = binascii.unhexlify(
-                b'f041001312000000000050646464643c006432211e003232323c64320310191a0f64411b140000002a556e7469746c656420202020202020200012f7')
+                b'f041001312000000000050646464643c006432211e003232323c32320310191a0f64411b140000002a556e7469746c656420202020202020200012f7')
         self._record = bytearray(record)
         self._gp8 = _gp8.data
         self._effect_lookup = _gp8.BANK_1_EFFECTS_MSB
